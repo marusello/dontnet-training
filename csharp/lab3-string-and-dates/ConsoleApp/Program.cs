@@ -14,10 +14,8 @@ namespace ConsoleApp
         }
 
         static void FormatarParaMaiusculaESubstituirPalavra(string message) {
-            var messageMaiuscula = message.ToUpper();
-
-            StringBuilder newMessage = new StringBuilder(messageMaiuscula);            
-            newMessage.Replace("DOT NET", ".NET");
+            
+            var newMessage = message.Replace("DOT NET", ".NET").ToUpper();
 
             Console.WriteLine(newMessage);
         }
@@ -25,8 +23,9 @@ namespace ConsoleApp
         static void AdicionarProximosNoveNumeros(int texto) {
              StringBuilder newTexto = new StringBuilder(texto); 
              
-             for (int i = texto; i<= 9; i++) {
-                 newTexto.Append("," + i);                 
+             for (int i = texto; i<= 9; i++) 
+             {
+                 newTexto = (i == texto) ? newTexto.Append(i) : newTexto.Append("," + i); 
              }
              Console.WriteLine(newTexto);
         }

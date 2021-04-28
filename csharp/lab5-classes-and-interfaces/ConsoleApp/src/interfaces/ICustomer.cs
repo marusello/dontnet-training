@@ -2,9 +2,11 @@ using ConsoleApp.src.entities;
 
 namespace ConsoleApp.src.interfaces
 {   
-
     public interface ICustomer
     { 
-        void Save(string codigo, string nome);
+        string codigo { get; set; }
+        string nome { get; set; }
+
+        void Save();
     }
 }

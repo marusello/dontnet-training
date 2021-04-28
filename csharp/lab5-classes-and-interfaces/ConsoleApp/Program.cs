@@ -9,9 +9,9 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            Customer customer = new Customer();
+            ICustomer customer = new Customer();
 
-            customer.Save("123", "teste");
+            customer.Save();
         }
     }
 }

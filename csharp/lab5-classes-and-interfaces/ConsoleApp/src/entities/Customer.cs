@@ -5,11 +5,11 @@ namespace ConsoleApp.src.entities
 {
     public class Customer : ICustomer
     {
-        public string codigo { get; set; }
-        public string nome { get; set; }
+        public string codigo { get; set; }  
+        public string nome { get; set; } 
 
-        public void Save(string codigo, string nome) 
-        {
+        public void Save() 
+        {            
             Console.WriteLine("Customer saved!");
         }
     }

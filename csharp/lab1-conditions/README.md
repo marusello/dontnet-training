@@ -8,7 +8,7 @@
 
   - Os valores possíveis que o usuário pode informar vão de 1 a 100.
   - Caso seja informado um valor fora deste range:
-   - **MENSAGEM DE SAÍDA**: Valor é inválido para o sorteio. Por favor entre com um valor de 1 a 100.
+    - **MENSAGEM DE SAÍDA**: Valor é inválido para o sorteio. Por favor entre com um valor de 1 a 100.
 
 - **REGRA2:**
 

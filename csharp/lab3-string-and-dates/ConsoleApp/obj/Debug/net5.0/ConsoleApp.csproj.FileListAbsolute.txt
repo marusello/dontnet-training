@@ -1,0 +1,16 @@
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ConsoleApp.csprojAssemblyReference.cache
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ConsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ConsoleApp.AssemblyInfoInputs.cache
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ConsoleApp.AssemblyInfo.cs
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\bin\Debug\net5.0\ConsoleApp.exe
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\bin\Debug\net5.0\ConsoleApp.deps.json
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\bin\Debug\net5.0\ConsoleApp.runtimeconfig.json
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\bin\Debug\net5.0\ConsoleApp.runtimeconfig.dev.json
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\bin\Debug\net5.0\ConsoleApp.dll
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\bin\Debug\net5.0\ref\ConsoleApp.dll
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\bin\Debug\net5.0\ConsoleApp.pdb
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ConsoleApp.dll
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ref\ConsoleApp.dll
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ConsoleApp.pdb
+C:\Users\marceloal\www\dontnet-training\csharp\lab3-string-and-dates\ConsoleApp\obj\Debug\net5.0\ConsoleApp.genruntimeconfig.cache

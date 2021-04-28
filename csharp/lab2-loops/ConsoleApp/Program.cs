@@ -10,12 +10,14 @@ namespace ConsoleApp
 
             while (sequencia <=10 ) 
             {
-                Console.WitheLine($"Sequência: {sequencia}");
+                Console.WriteLine($"Sequência: {sequencia}");
 
                 if (sequencia % 2 == 0) 
                 {
-                    Console.WitheLine($"Número par: {sequencia}");
+                    Console.WriteLine($"Número par: {sequencia}");
                 }
+                
+                sequencia++;
             }
            
         }

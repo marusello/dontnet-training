@@ -44,7 +44,7 @@ export default{
         methods: {
             getItem()
             {
-              let uri = 'http://localhost:5000/api/categorias/' + this.$route.params.id;
+              let uri = 'https://localhost:44328/api/categorias' + this.$route.params.id;
                 this.axios.get(uri).then((response) => {
                     this.item = response.data;
                 });
@@ -52,7 +52,7 @@ export default{
 
             updateItem()
             {
-              let uri = 'http://localhost:5000/api/categorias/' + this.$route.params.id;
+              let uri = 'https://localhost:44328/api/categorias/' + this.$route.params.id;
                 this.axios.put(uri, this.item).then(() => {
                   this.$router.push({name: 'IndexCategoria'});
                 }).catch((error) => {

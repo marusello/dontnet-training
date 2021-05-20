@@ -64,20 +64,20 @@ export default{
             getItem()
             {
                 this.error = null;
-                let uri = 'http://localhost:5000/api/produtos/' + this.$route.params.id;
+                let uri = 'https://loscalhost:44328/api/produtos/' + this.$route.params.id;
                 this.axios.get(uri).then((response) => {
                     this.item = response.data;
                     for (let index = 0; index < this.categorias.length; index++) {
                         if(this.item.categoria.id == this.categorias[index].id) {
                             this.item.categoria = this.categorias[index];
                         }
-                    }
+                    } 
                 });
             },
 
             getCategorias()
             {
-                let uri = 'http://localhost:5000/api/categorias/';
+                let uri = 'https://localhost:44328/api/categorias';
 
                 this.axios.get(uri).then((response) => {
                     this.categorias = response.data;
@@ -87,7 +87,7 @@ export default{
 
             updateItem()
             {
-              let uri = 'http://localhost:5000/api/produtos/' + this.$route.params.id;
+              let uri = 'https://localhost:44328/api/produtos/' + this.$route.params.id;
                 this.axios.put(uri, this.item).then(() => {
                   this.$router.push({name: 'IndexProduto'});
                 }).catch((error) => {

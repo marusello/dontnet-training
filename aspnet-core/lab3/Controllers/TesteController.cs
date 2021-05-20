@@ -1,7 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 
-namespace lab2.Controllers
+namespace lab3.Controllers
 {
     [Route("api/teste")]
     [ApiController]
@@ -13,14 +12,20 @@ namespace lab2.Controllers
         public IActionResult Get()
         {
             count++;
-
-            if (count % 2 == 0)
+            try
             {
-                return Ok();
+                if (count % 2 == 0)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    throw new TesteException("teste");
+                }
             }
-            else
+            catch (TesteException ex)
             {
-                throw new Exception();
+                return BadRequest(ex.Message);
             }
         }
     }

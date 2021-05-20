@@ -35,7 +35,7 @@ export default {
   },
   methods: {
       addItem() {
-        let uri = 'http://localhost:5000/api/items';
+        let uri = 'https://localhost:44328/api/items';
 
         this.axios.post(uri, this.item, { headers: { 'Content-type': 'application/json',
       }

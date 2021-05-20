@@ -38,7 +38,7 @@ export default {
   },
   methods: {
         addItem() {
-            let uri = 'http://localhost:5000/api/categorias';
+            let uri = 'https://localhost:44328/api/categorias';
 
             this.axios.post(uri, this.item, { headers: { 'Content-type': 'application/json' } })
             .then(() => this.$router.push('/categorias'))

@@ -59,7 +59,7 @@ export default {
     methods: {
         getCategorias()
         {
-            let uri = 'http://localhost:5000/api/categorias/';
+            let uri = 'https://localhost:44328/api/categorias';
 
             this.axios.get(uri).then((response) => {
                 this.categorias = response.data;
@@ -67,10 +67,11 @@ export default {
         },
 
         addItem() {
-            let uri = 'http://localhost:5000/api/produtos';
+            let uri = 'https://localhost:44328/api/produtos';
 
             this.axios.post(uri, this.item, { headers: { 'Content-type': 'application/json' } }).then(() => 
             {
+                console.log(this.item);
                 this.$router.push({name: 'IndexProduto'});
             }).catch((error) => {
                 this.error = error.response.data;

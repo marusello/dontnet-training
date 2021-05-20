@@ -60,21 +60,21 @@
         methods: {
             fetchItems()
             {
-              let uri = 'http://localhost:5000/api/categorias';
+              let uri = 'https://localhost:44328/api/categorias';
               this.axios.get(uri).then((response) => {
                   this.items = response.data;
               });
             },
             deleteItem(id)
             {
-              let uri = 'http://localhost:5000/api/categorias/' + id;
+              let uri = 'https://localhost:44328/api/categorias/' + id;
 
               this.axios.delete(uri).then(() => {
                   this.items.splice(id, 1);
-              });
+              }); 
             },
             onBlurSearch (event) {
-                let uri = 'http://localhost:5000/api/categorias/search?descricao=' + event.srcElement.value;
+                let uri = 'https://localhost:44328/api/categorias/search?descricao=' + event.srcElement.value;
                 this.axios.get(uri).then((response) => {
                     this.items = response.data;
                 });

@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ public class ProdutoController : ControllerBase
 
       return Ok(listaData);
     }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Produto>> Get(Guid id)
     {   

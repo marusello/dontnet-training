@@ -14,7 +14,7 @@
                 <form v-on:submit.prevent="updateItem">
                     <div class="form-group">
                         <label>Código:</label>
-                        <input type="text" class="form-control" v-model="item.codigo"/>
+                        <input type="text" class="form-control" v-model="item.codigo" value=categoria.codigo/>
                     </div>
                     <div class="form-group">
                         <label>Descrição:</label>
@@ -49,7 +49,10 @@ export default{
         data(){
             return{
                 item:{
-                    categoria: {}
+                    categoria: 
+                    {
+                        
+                    }
                 },
                 categorias: [],
                 error: null
@@ -57,7 +60,7 @@ export default{
         },
 
         created: function(){
-            this.getCategorias();
+            this.getCategorias();          
         },
 
         methods: {
@@ -67,6 +70,7 @@ export default{
                 let uri = 'https://loscalhost:44328/api/produtos/' + this.$route.params.id;
                 this.axios.get(uri).then((response) => {
                     this.item = response.data;
+                    console.log(this.item);
                     for (let index = 0; index < this.categorias.length; index++) {
                         if(this.item.categoria.id == this.categorias[index].id) {
                             this.item.categoria = this.categorias[index];

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-using Repository.Entidades;
+using Business.Entidades;
 
 namespace Repository.Data
 {

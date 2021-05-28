@@ -74,7 +74,7 @@ export default {
                 console.log(this.item);
                 this.$router.push({name: 'IndexProduto'});
             }).catch((error) => {
-                this.error = error.response.data;
+                this.error = error.response.data;               
             });
         }
     }

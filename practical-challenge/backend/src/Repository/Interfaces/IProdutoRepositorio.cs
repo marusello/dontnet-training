@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Repository.Entidades;
+using Business.Entidades;
 
 namespace Repository.Interfaces
 {
     public interface IProdutoRepositorio
     {
-        Task<List<ProdutoModel>> Get();
+        Task<List<ProdutoModel>> GetAll();
         Task<ProdutoModel> GetById(Guid id);
-        List<ProdutoModel> GetByDescription(string descricao);
-        Task Post(ProdutoModel produtoModel);
-        Task Put(Guid id, ProdutoInputModel produtoInputModel);
-        Task Remove(Guid id);
+        Task<List<ProdutoModel>> GetByDescription(string descricao);
+        void Post(ProdutoModel model);
+        void Put(Guid id, ProdutoInputModel inputModel);
+        void Remove(Guid id);
     }
 }

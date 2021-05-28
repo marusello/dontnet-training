@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Business.Excecoes;
 using Microsoft.EntityFrameworkCore;
+
+using Business.Entidades;
 using Repository.Data;
-using Repository.Entidades;
 using Repository.Interfaces;
 
 namespace Repository.Repositorios
@@ -18,53 +18,54 @@ namespace Repository.Repositorios
         {
             _context = context;
         }
-        public async Task<List<CategoriaModel>> Get()
+        public async Task<List<CategoriaModel>> GetAll()
         {
-            await using var db = _context;
-            var categorias = db.Categorias.ToList();
+            var categorias = await _context.Categorias.ToListAsync();
             return categorias;
         }
         public async Task<CategoriaModel> GetById(Guid id)
         {
-            await using var db = _context;
-            var categoria = db.Categorias
-              .SingleOrDefault(c => c.Id == id);
+            var categoria = await _context.Categorias
+              .SingleOrDefaultAsync(c => c.Id == id);
             return categoria;
         }
         public async Task<List<CategoriaModel>> GetByDescription(string descricao)
         {
-            await using var db = _context;
-            var categoria = db.Categorias
+            var categoria = await _context.Categorias
               .Where(c => c.Descricao.Contains(descricao.ToLower()))
-              .ToList();
+              .ToListAsync();
             return categoria;
         }
-        public async Task Post(CategoriaModel model)
+        public void Post(CategoriaModel model)
         {
-            await using var db = _context;
-            db.Categorias.Add(model);
-            await db.SaveChangesAsync();
+            _context.Categorias.Add(model);
+            _context.SaveChangesAsync();
         }
-        public async Task Put(Guid id, CategoriaInputModel categoriaInputModel)
+        public void Put(Guid id, CategoriaInputModel inputModel)
         {
-            using var db = _context;
-            var categoria = db.Categorias
+            var categoria = _context.Categorias
                 .SingleOrDefault(c => c.Id == id);
 
-            categoria.Codigo = categoriaInputModel.Codigo;
-            categoria.Descricao = categoriaInputModel.Descricao;
+            categoria.UpdateCategoria(inputModel.Codigo, inputModel.Descricao);
 
-            await db.SaveChangesAsync();
+            _context.SaveChangesAsync();
         }
-        public async Task Remove(Guid id)
+        public async Task<bool> Remove(Guid id)
         {
-            await using var db = _context;
-            var categoria = db.Categorias
-                .SingleOrDefault(c => c.Id == id);
+            var produto = _context.Produtos.
+                SingleOrDefault(p => p.CategoriaId == p.Categoria.Id);
 
-            db.Categorias.Remove(categoria);
-            await db.SaveChangesAsync();
+            if (produto == null)
+            {
+                var categoria = _context.Categorias                
+                    .SingleOrDefault(c => c.Id == id);
 
+                _context.Categorias.Remove(categoria);
+                await _context.SaveChangesAsync();
+                return false;
+            }
+
+            return true;
         }
     }
 }

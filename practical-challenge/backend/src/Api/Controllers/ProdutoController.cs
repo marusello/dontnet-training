@@ -1,10 +1,11 @@
-﻿using Business.Excecoes;
-using Microsoft.AspNetCore.Mvc;
-using Repository.Entidades;
-using Repository.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FluentValidation;
+
+using Business.Entidades;
+using Repository.Interfaces;
 
 namespace webapi.Controllers
 {
@@ -13,74 +14,93 @@ namespace webapi.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepositorio _produtoRepositorio;
+        private readonly IValidator<ProdutoInputModel> _validateProduto;
 
-        public ProdutoController(IProdutoRepositorio produtoRepositorio)
+        public ProdutoController(IProdutoRepositorio produtoRepositorio, IValidator<ProdutoInputModel> validateProduto)
         {
             _produtoRepositorio = produtoRepositorio;
+            _validateProduto = validateProduto;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ProdutoModel>>> Get()
         {
-            var produtos = await _produtoRepositorio.Get();
+            var produtos = await _produtoRepositorio.GetAll();
             return Ok(produtos);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProdutoModel>> Get(Guid id)
         {
-            if (id != Guid.Empty)
-            {
                 var produto = await _produtoRepositorio.GetById(id);
+
                 if (produto != null)
                 {
                     return Ok(produto);
-                }else
-                {
-                    return BadRequest("Categoria não encontrada");
                 }
-            }
-            else
-            {
-                throw new BusinessException("Oops! Ocorreu um erro.");
-            }
+                else
+                {
+                    return NotFound("Produto não encontrada");
+                }                       
         }
 
         [HttpGet("search")]
-        public ActionResult<List<ProdutoModel>> Get([FromQuery] string descricao)
+        public async Task<ActionResult<List<ProdutoModel>>> Get([FromQuery] string descricao)
         {
-            List<ProdutoModel> produto = _produtoRepositorio.GetByDescription(descricao);
-            return Ok(produto);
+            if (descricao == null || descricao == "")
+            {
+                var produtos = await _produtoRepositorio.GetAll();
+                return Ok(produtos);
+            }
+
+            List<ProdutoModel> produto = await _produtoRepositorio.GetByDescription(descricao);
+
+            if (produto != null)
+            {
+                return Ok(produto);
+            }
+            else
+            {
+                return NotFound("Produto não encontrada");
+            }
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] ProdutoInputModel produtoInputModel)
+        public ActionResult Post([FromBody] ProdutoInputModel inputModel)
         {
-            if (ModelState.IsValid)
+            List<string> response = new List<string>();
+
+            var validationResult = _validateProduto.Validate(inputModel);
+
+            if (validationResult.IsValid)
             {
-                var produto = new ProdutoModel(produtoInputModel.Codigo, produtoInputModel.Descricao, produtoInputModel.Preco, produtoInputModel.UnidadeMedida, produtoInputModel.Categoria.Id);
+                var produto = new ProdutoModel(inputModel);
+
                 _produtoRepositorio.Post(produto);
-                return Ok(produto);
+                return Ok();
+
             }
-            return BadRequest();
+            else
+            {
+                foreach (var error in validationResult.Errors)
+                {
+                    response.Add(error.ErrorMessage);
+                }
+            }
+            return BadRequest(response);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromBody] ProdutoInputModel produtoInputModel, Guid id)
+        public ActionResult Put([FromBody] ProdutoInputModel inputModel, Guid id)
         {
-            if (produtoInputModel == null)
-            {
-                return BadRequest("Campos vazios");
-            }
-
-            await _produtoRepositorio.Put(id, produtoInputModel);
-            return Ok();
+                _produtoRepositorio.Put(id, inputModel);
+                return Ok();           
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(Guid id)
+        public ActionResult Delete(Guid id)
         {
-            await _produtoRepositorio.Remove(id);
+            _produtoRepositorio.Remove(id);
             return Ok();
         }
     }

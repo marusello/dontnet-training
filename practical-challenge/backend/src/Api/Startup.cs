@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -5,15 +6,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http;
+using FluentValidation;
 
+using Business.Entidades;
+using Business.Excecoes;
+using Business.Excecoes.Validator;
 using Repository.Data;
-
-using Repository.Entidades;
 using Repository.Repositorios;
 using Repository.Interfaces;
-using Business.Excecoes;
-using System.Net;
-using Microsoft.AspNetCore.Http;
 
 namespace Api
 {
@@ -33,8 +34,14 @@ namespace Api
             services.AddScoped<Context, Context>();
 
             services.AddControllers();
+            //services.AddControllers().AddFluentValidation();
+
+            services.AddTransient<IValidator<ProdutoInputModel>, ValidarCadastroProdutoValidator>();             
+            services.AddTransient<IValidator<CategoriaInputModel>, ValidarCadastroCategoriaValidator>();
+
             services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
             services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
+
 
             services.AddCors();
             services.AddSwaggerGen(c =>
@@ -86,8 +93,6 @@ namespace Api
                         // .SetIsOriginAllowed((host) => true);
                         .SetIsOriginAllowed(isOriginAllowed: _ => true);
                 });
-
-
 
             app.UseAuthorization();
 

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
+using Business.Entidades;
 using Repository.Data;
-using Repository.Entidades;
 using Repository.Interfaces;
 
 namespace Repository.Repositorios
@@ -19,57 +19,60 @@ namespace Repository.Repositorios
             _context = context;
         }
 
-        public async Task<List<ProdutoModel>> Get()
+        public async Task<List<ProdutoModel>> GetAll()
         {
             var produtos = await _context.Produtos.Include(x => x.Categoria).ToListAsync();
             return produtos;
-               
         }
         public async Task<ProdutoModel> GetById(Guid id)
-        {
-            await using var db = _context;
-            var produto = await db.Produtos
+        {    
+            var produto = await _context.Produtos
+              .Include(x => x.Categoria)
               .AsNoTracking()
               .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (produto == null)
+                return null;
+
             return produto;
         }
-        public List<ProdutoModel> GetByDescription(string descricao)
-        {            
-            var produto = _context.Produtos
+        public async Task<List<ProdutoModel>> GetByDescription(string descricao)
+        {
+            var produto = await _context.Produtos
               .Where(c => c.Descricao.Contains(descricao.ToLower()))
-              .ToList();
+              .AsNoTracking()
+              .ToListAsync();
+
+            if (produto == null)            
+                return null;            
+
             return produto;
         }
 
-        public async Task Post(ProdutoModel produtoModel)
-        {       
-            _context.Produtos.Add(produtoModel);
-            await _context.SaveChangesAsync();            
+        public void Post(ProdutoModel model)
+        {
+            _context.Produtos.Add(model);
+            _context.SaveChangesAsync();
         }
 
-        public async Task Put(Guid id, ProdutoInputModel produtoInputModel)
+        public void Put(Guid id, ProdutoInputModel inputModel)
         {
-            await using var db = _context;
-            var produto = db.Produtos
+            var produto = _context.Produtos
                 .SingleOrDefault(c => c.Id == id);
 
-            produto.Codigo = produtoInputModel.Codigo;
-            produto.Descricao = produtoInputModel.Descricao;
-            produto.Preco = produtoInputModel.Preco;
-            produto.UnidadeMedida = produtoInputModel.UnidadeMedida;
-            produto.CategoriaId = produtoInputModel.Categoria.Id;
+            produto.UpdateProduto(inputModel.Codigo, inputModel.Descricao,
+                inputModel.Preco, inputModel.UnidadeMedida, inputModel.Categoria);
 
-            await db.SaveChangesAsync();
+            _context.SaveChangesAsync();
         }
 
-        public async Task Remove(Guid id)
+        public void Remove(Guid id)
         {
-            await using var db = _context;
-            var produto = db.Produtos
-                .SingleOrDefault(c => c.Id == id);
+            var produto = _context.Produtos
+                .SingleOrDefault(c => c.Id == id);          
 
-            db.Produtos.Remove(produto);
-            await db.SaveChangesAsync();
+            _context.Produtos.Remove(produto);
+            _context.SaveChangesAsync();
         }
     }
 }

@@ -16,11 +16,11 @@ namespace Api.Controllers
         private readonly ICategoriaRepositorio _categoriaRepositorio;
         private readonly IValidator<CategoriaInputModel> _validateCategoria;
 
-        public CategoriaController(ICategoriaRepositorio categoriaRepositorio, IValidator<CategoriaInputModel> validateCategoria)
+        public CategoriaController(ICategoriaRepositorio categoriaRepositorio,
+            IValidator<CategoriaInputModel> validateCategoria)
         {
             _categoriaRepositorio = categoriaRepositorio;
             _validateCategoria = validateCategoria;
-
         }
 
         [HttpGet]
@@ -35,14 +35,10 @@ namespace Api.Controllers
         {
             var categoria = await _categoriaRepositorio.GetById(id);
 
-            if (categoria != null)
-            {
-                return Ok(categoria);
-            }
-            else
-            {
+            if (categoria == null)
                 return NotFound("Categoria não encontrada");
-            }
+
+            return Ok(categoria);
         }
 
         [HttpGet("search")]
@@ -56,14 +52,10 @@ namespace Api.Controllers
 
             List<CategoriaModel> categoria = await _categoriaRepositorio.GetByDescription(descricao);
 
-            if (categoria != null)
-            {
-                return Ok(categoria);
-            }
-            else
-            {
+            if (categoria == null)
                 return NotFound("Categoria não encontrada");
-            }
+
+            return Ok(categoria);
         }
 
         [HttpPost]
@@ -94,8 +86,32 @@ namespace Api.Controllers
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] CategoriaInputModel inputModel, Guid id)
         {
-            _categoriaRepositorio.Put(id, inputModel);
-            return Ok();
+            List<string> response = new List<string>();
+
+            if (inputModel.Codigo == null || inputModel.Codigo == "")
+            {
+                _categoriaRepositorio.Put(id, inputModel);
+                return Ok();
+            }
+            else
+            {
+                var validationResult = _validateCategoria.Validate(inputModel);
+
+                if (validationResult.IsValid)
+                {
+                    _categoriaRepositorio.Put(id, inputModel);
+                    return Ok();
+                }
+                else
+                {
+                    foreach (var error in validationResult.Errors)
+                    {
+                        response.Add(error.ErrorMessage);
+                    }
+                }
+            }
+
+            return BadRequest(response);
         }
 
         [HttpDelete("{id}")]
@@ -104,9 +120,7 @@ namespace Api.Controllers
             var isValide = await _categoriaRepositorio.Remove(id);
 
             if (isValide != true)
-            {
                 return Ok();
-            }
 
             return BadRequest("Categoria não pode ser apagada, pois está vinculada produto");
         }

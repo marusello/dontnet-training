@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Create from './components/produtos/Create.vue';
 import Edit from './components/produtos/Edit.vue';
 import Index from './components/produtos/Index.vue';
@@ -24,7 +25,7 @@ export default new Router({
     },
     {
       name: 'IndexProduto',
-      path: '/',
+      path: '/produtos',
       component: Index
     },
     {

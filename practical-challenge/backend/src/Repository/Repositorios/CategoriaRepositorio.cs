@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Business.Entidades;
 using Repository.Data;
 using Repository.Interfaces;
+using Business.Excecoes;
 
 namespace Repository.Repositorios
 {
@@ -27,6 +28,7 @@ namespace Repository.Repositorios
         {
             var categoria = await _context.Categorias
               .SingleOrDefaultAsync(c => c.Id == id);
+
             return categoria;
         }
         public async Task<List<CategoriaModel>> GetByDescription(string descricao)
@@ -34,6 +36,7 @@ namespace Repository.Repositorios
             var categoria = await _context.Categorias
               .Where(c => c.Descricao.Contains(descricao.ToLower()))
               .ToListAsync();
+
             return categoria;
         }
         public void Post(CategoriaModel model)
@@ -46,18 +49,22 @@ namespace Repository.Repositorios
             var categoria = _context.Categorias
                 .SingleOrDefault(c => c.Id == id);
 
-            categoria.UpdateCategoria(inputModel.Codigo, inputModel.Descricao);
-
-            _context.SaveChangesAsync();
+            if (categoria == null)
+            {
+                throw new BusinessException("Categoria não encontrada");
+            }
+            
+                categoria.UpdateCategoria(inputModel.Codigo, inputModel.Descricao);
+                _context.SaveChangesAsync();            
         }
         public async Task<bool> Remove(Guid id)
         {
-            var produto = _context.Produtos.
-                SingleOrDefault(p => p.CategoriaId == p.Categoria.Id);
+            var existProduct = _context.Produtos.
+                Any(p => p.CategoriaId == id);
 
-            if (produto == null)
+            if (!existProduct)
             {
-                var categoria = _context.Categorias                
+                var categoria = _context.Categorias
                     .SingleOrDefault(c => c.Id == id);
 
                 _context.Categorias.Remove(categoria);

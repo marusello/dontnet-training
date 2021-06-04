@@ -15,6 +15,7 @@ using Business.Excecoes.Validator;
 using Repository.Data;
 using Repository.Repositorios;
 using Repository.Interfaces;
+using FluentValidation.AspNetCore;
 
 namespace Api
 {
@@ -37,11 +38,10 @@ namespace Api
             //services.AddControllers().AddFluentValidation();
 
             services.AddTransient<IValidator<ProdutoInputModel>, ValidarCadastroProdutoValidator>();             
-            services.AddTransient<IValidator<CategoriaInputModel>, ValidarCadastroCategoriaValidator>();
+            services.AddTransient<IValidator<CategoriaInputModel>, ValidarCadastroCategoriaValidator>();           
 
             services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
             services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
-
 
             services.AddCors();
             services.AddSwaggerGen(c =>
@@ -90,7 +90,6 @@ namespace Api
                         .AllowCredentials()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        // .SetIsOriginAllowed((host) => true);
                         .SetIsOriginAllowed(isOriginAllowed: _ => true);
                 });
 

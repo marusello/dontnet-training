@@ -6,12 +6,16 @@ import store from './store'
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 
+import DateFilter from './filter/date' // Data de importação
+
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios);
+
+Vue.filter('date', DateFilter ) // registrar o filtro globalmente
 
 new Vue({
   router,

@@ -32,37 +32,29 @@ namespace webapi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProdutoModel>> Get(Guid id)
         {
-                var produto = await _produtoRepositorio.GetById(id);
+            var produto = await _produtoRepositorio.GetById(id);
 
-                if (produto != null)
-                {
-                    return Ok(produto);
-                }
-                else
-                {
-                    return NotFound("Produto não encontrada");
-                }                       
+            if (produto == null)
+                return NotFound("Produto não encontrada");
+
+            return Ok(produto);
         }
 
         [HttpGet("search")]
         public async Task<ActionResult<List<ProdutoModel>>> Get([FromQuery] string descricao)
         {
-            if (descricao == null || descricao == "")
+            if (descricao == null)
             {
-                var produtos = await _produtoRepositorio.GetAll();
+                List<ProdutoModel> produtos = await _produtoRepositorio.GetAll();
                 return Ok(produtos);
             }
 
             List<ProdutoModel> produto = await _produtoRepositorio.GetByDescription(descricao);
 
-            if (produto != null)
-            {
-                return Ok(produto);
-            }
-            else
-            {
+            if (produto == null)
                 return NotFound("Produto não encontrada");
-            }
+
+            return Ok(produto);
         }
 
         [HttpPost]
@@ -93,8 +85,33 @@ namespace webapi.Controllers
         [HttpPut("{id}")]
         public ActionResult Put([FromBody] ProdutoInputModel inputModel, Guid id)
         {
+            List<string> response = new List<string>();
+
+            if (inputModel.Codigo == null || inputModel.Codigo == "")
+            {
                 _produtoRepositorio.Put(id, inputModel);
-                return Ok();           
+                return Ok();
+            }
+            else
+            {
+                var validationResult = _validateProduto.Validate(inputModel);
+
+                if (validationResult.IsValid)
+                {
+                    _produtoRepositorio.Put(id, inputModel);
+                    return Ok();
+                }
+                else
+                {
+                    foreach (var error in validationResult.Errors)
+                    {
+                        response.Add(error.ErrorMessage);
+                    }
+                }
+            }
+
+            return BadRequest(response);
+
         }
 
         [HttpDelete("{id}")]

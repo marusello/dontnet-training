@@ -49,7 +49,7 @@
             },
             deleteItem(id)
             {
-              let uri = 'http://localhost:5000/api/items/' + id;
+              let uri = 'https://localhost:44328/api/items/' + id;
 
               this.axios.delete(uri).then(() => {
                   this.items.splice(id, 1);
